@@ -36,10 +36,10 @@ class TooManyProductsFoundError(Exception):
 
 
 class ServerInterface(ABC):
-    n_max_returned_entries: int = 3
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    n_max_returned_entries: int = 3
 
     @property
     @abstractmethod
@@ -95,7 +95,8 @@ class MapServer(ServerInterface):
                 final_product_list.append(pro)
 
         product_list_length = len(final_product_list)
-        if product_list_length > MapServer.n_max_returned_entries:
+
+        if product_list_length > self.n_max_returned_entries:
             raise TooManyProductsFoundError(product_list_length)
 
         final_product_list.sort(key=operator.attrgetter('price'))
